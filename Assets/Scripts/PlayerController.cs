@@ -46,15 +46,16 @@ private Rigidbody2D body;
     {
         if (other.CompareTag("Coin"))
         {
-            coins += 1;
+           
             Destroy(other.gameObject);
-            print("you have " + coins + " coins");
+           
+            ChangeCoins(5);
         }
         if (other.CompareTag("HealthPotion"))
         {
             health += 1;
             Destroy(other.gameObject);
-            print("you have " + health + " health");
+          
         }
         
     }
@@ -109,5 +110,33 @@ private Rigidbody2D body;
         {
             Debug.Log("PLayer died.");
         }
+    }
+
+    public void ChangeCoins(int amount)
+    {
+      coins = coins+amount;
+           
+            print("you have " + coins + " coins");  
+    }
+    
+    public void ChangeHealth(int amount)
+    {
+        health += 1;
+           
+            print("you have " + health + " health");
+             health = health - amount;
+      
+        Debug.Log("Health: " + health);
+
+        if (health <=0)
+        {
+            Debug.Log("PLayer died.");
+        }
+    }
+
+    void Die()
+    {
+        print("You died.");
+        //reload scence
     }
 }
