@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 718117023594377784}
   m_Layer: 0
   m_Name: Turret_Projectile
-  m_TagString: Enemy
+  m_TagString: E_Fireball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,3 +105,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91a375c3cea4b3441af52e29e441e8d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  target: {fileID: 0}

@@ -57,7 +57,12 @@ private Rigidbody2D body;
             Destroy(other.gameObject);
           
         }
-        
+        if (other.gameObject.CompareTag("E_Fireball"))
+        {
+            ChangeHealth(-2);
+            Destroy(other.gameObject);
+        }
+    
     }
 
     void UpdateAnimation()
@@ -132,6 +137,7 @@ private Rigidbody2D body;
         {
             Debug.Log("PLayer died.");
         }
+
     }
 
     void Die()
