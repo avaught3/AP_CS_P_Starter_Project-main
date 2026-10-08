@@ -1,4 +1,7 @@
+using System;
+using Unity.Mathematics;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,11 +13,21 @@ public class PlayerController : MonoBehaviour
     float ydirection;
     float xvector;
     float yvector;
-    private Animator anim;
+     private Animator anim;
     private SpriteRenderer renderer;
   [SerializeField]  private int coins;
   [SerializeField]  private int health = 3;
 private Rigidbody2D body;
+private float cooldown = 1f;
+private float maxCooldown = 1.5f;
+private bool inRange = false;
+Transform target;
+String facing;
+
+
+[SerializeField] private GameObject projectile_prefab;
+
+ [SerializeField] Transform spawnpoint;
     
     private void Start()
     {
@@ -35,10 +48,24 @@ private Rigidbody2D body;
        xvector = xdirection * speed * Time.deltaTime;
        yvector = ydirection * speed * Time.deltaTime;
        //move by vector amount
+       if (xdirection>0)
+        {
+            facing = "Right";
+        }
        transform.position += new Vector3(xvector,yvector,0f);
        UpdateAnimation();
        body.linearVelocity = new Vector2(xvector, yvector) * speed;
+       if (Input.GetKeyDown(KeyCode.Space))
+        {
+            cooldown-= Time.deltaTime;
+        
+        if (cooldown <=0)
+            {
+                Shoot();
 
+                cooldown = maxCooldown;
+            }
+        } 
     
     }
 
@@ -99,6 +126,7 @@ private Rigidbody2D body;
         {
             TakeDamage(1);
         }
+    
     }
 
     private void TakeDamage(int amount)
@@ -144,5 +172,14 @@ private Rigidbody2D body;
     {
         print("You died.");
         //reload scence
+    }
+
+    private void Shoot()
+    {
+        cooldown = maxCooldown;
+         GameObject fireball = Instantiate(projectile_prefab, spawnpoint.position, quaternion.identity);
+
+     Projectile projectile= fireball.GetComponent<Projectile>();
+     projectile.target = target;
     }
 }

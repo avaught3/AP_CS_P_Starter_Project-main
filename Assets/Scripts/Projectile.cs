@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-float speed = 10;
+float speed = 8;
 public Transform target; 
 Vector3 target_position;
 
- private float cooldown = 0f;
+ private float cooldown = 1f;
 private float maxCooldown = 1.5f;
 
     
@@ -15,7 +15,6 @@ private float maxCooldown = 1.5f;
     {
        //get our target location
        target_position = target.position;
-
 
     }
 
