@@ -18,24 +18,24 @@ public class PlayerController : MonoBehaviour
   [SerializeField]  private int coins;
   [SerializeField]  private int health = 3;
 private Rigidbody2D body;
-private float cooldown = 1f;
+private float cooldown = 0f;
 private float maxCooldown = 1.5f;
 private bool inRange = false;
 Transform target;
 String facing;
 
 
+
 [SerializeField] private GameObject projectile_prefab;
 
- [SerializeField] Transform spawnpoint;
     
     private void Start()
     {
         anim = GetComponentInChildren<Animator>();
         renderer = GetComponentInChildren<SpriteRenderer>();
        body = GetComponent<Rigidbody2D>();
-        
-        
+        cooldown = maxCooldown;
+       
        
     }
 
@@ -57,8 +57,8 @@ String facing;
        body.linearVelocity = new Vector2(xvector, yvector) * speed;
        if (Input.GetKeyDown(KeyCode.Space))
         {
-            cooldown-= Time.deltaTime;
-        
+           cooldown-= Time.deltaTime;
+      
         if (cooldown <=0)
             {
                 Shoot();
@@ -66,7 +66,11 @@ String facing;
                 cooldown = maxCooldown;
             }
         } 
-    
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+        print("shoot");
+        Shoot();
+       }
+   
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -177,9 +181,16 @@ String facing;
     private void Shoot()
     {
         cooldown = maxCooldown;
-         GameObject fireball = Instantiate(projectile_prefab, spawnpoint.position, quaternion.identity);
+         GameObject Fireball = Instantiate(projectile_prefab, transform.position, quaternion.identity);
 
-     Projectile projectile= fireball.GetComponent<Projectile>();
+     Projectile projectile= Fireball.GetComponent<Projectile>();
      projectile.target = target;
+   
     }
+  void OnTriggerEnter(Collider other)
+    {
+       
+    } 
+  
+
 }

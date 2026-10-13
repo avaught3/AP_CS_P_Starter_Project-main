@@ -1,31 +1,45 @@
 using System;
-using System.Numerics;
 using UnityEngine;
 
 public class PlayerProjectile : MonoBehaviour
 {
     float speed = 10;
-    Vector3 direction = new Vector3(1,0);
-     float xvector;
-    float yvector;
+    Vector3 direction = new (1,0);
+    Vector3 target_position;
+    public Transform target; 
+    private float cooldown = 1f;
+private float maxCooldown = 1.5f;
+
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+         
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position += speed * direction * Time.deltaTime;
+        float step = speed * Time.deltaTime;
+        
+           transform.position = Vector3.MoveTowards(transform.position, target_position, step);
+              cooldown-= Time.deltaTime;
+
+        if (cooldown < 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
-   public void SetDirection(String facing)
+    public void SetDirection(String facing)
     {
-        if (facing == "Right")
+        if (facing == "Right") 
         {
-            direction = new Vector3
-
+            direction = new Vector3(1, 0, 0);
+        }
+        else if (facing == "Left")
+        {
+            direction = new Vector3(-1, 0, 0);
         }
     }
 }

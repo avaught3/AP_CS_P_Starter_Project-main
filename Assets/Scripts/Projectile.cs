@@ -15,6 +15,7 @@ private float maxCooldown = 1.5f;
     {
        //get our target location
        target_position = target.position;
+       
 
     }
 

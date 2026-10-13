@@ -164,6 +164,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   coins: 0
   health: 3
+  projectile_prefab: {fileID: 5536163553699341134, guid: 3698eacd6bec947f1ae89cbaeb28a2a1, type: 3}
+  spawnpoint: {fileID: 0}
 --- !u!58 &2109020006998169954
 CircleCollider2D:
   m_ObjectHideFlags: 0

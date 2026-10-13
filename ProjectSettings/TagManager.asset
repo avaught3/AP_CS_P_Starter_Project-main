@@ -12,6 +12,7 @@ TagManager:
   - GroundCheck
   - HealthPotion
   - E_Fireball
+  - Fireball
   layers:
   - Default
   - TransparentFX

@@ -42,9 +42,9 @@ Transform target;
 
         print("Shoot Player");
 
-     GameObject fireball = Instantiate(projectile_prefab, spawnpoint.position, quaternion.identity);
+     GameObject E_Fireball = Instantiate(projectile_prefab, spawnpoint.position, quaternion.identity);
 
-     Projectile projectile= fireball.GetComponent<Projectile>();
+     Projectile projectile= E_Fireball.GetComponent<Projectile>();
      projectile.target = target;
     }
 
