@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
      private Animator anim;
     private SpriteRenderer renderer;
   [SerializeField]  private int coins;
-  [SerializeField]  private int health = 3;
+  [SerializeField]  private int health = 7;
 private Rigidbody2D body;
 private float cooldown = 0f;
 private float maxCooldown = 1.5f;
@@ -103,7 +103,7 @@ String facing;
         }
         if (other.gameObject.CompareTag("E_Fireball"))
         {
-            ChangeHealth(-2);
+           ChangeHealth(-3);
             Destroy(other.gameObject);
         }
     
@@ -143,22 +143,22 @@ String facing;
         {
             TakeDamage(1);
         }
-    
+        
     }
+    
 
     private void TakeDamage(int amount)
     {
+       
+        health = health - amount;
+         Debug.Log("Health " + health);
         if (health <=0)
+        {
+            Debug.Log("Player died.");
+        }
+          if (health <=0)
         {
             return;
-        }
-
-        health = health - amount;
-        Debug.Log("Health: " + health);
-
-        if (health <=0)
-        {
-            Debug.Log("PLayer died.");
         }
     }
 
@@ -171,8 +171,7 @@ String facing;
     
     public void ChangeHealth(int amount)
     {
-        health += 1;
-           
+     
             print("you have " + health + " health");
              health = health - amount;
       
