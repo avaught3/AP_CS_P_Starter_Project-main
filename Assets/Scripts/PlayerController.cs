@@ -52,10 +52,22 @@ String facing;
         {
             facing = "Right";
         }
+        else if (xdirection<0)
+        {
+            facing = "Left";
+        }
+        else if (ydirection>0)
+        {
+            facing = "Up";
+        }
+        else if (ydirection<0)
+        {
+            facing = "Down";
+        }
        transform.position += new Vector3(xvector,yvector,0f);
        UpdateAnimation();
        body.linearVelocity = new Vector2(xvector, yvector) * speed;
-       if (Input.GetKeyDown(KeyCode.Space))
+       if (Input.GetKeyDown(KeyCode.LeftShift))
         {
            cooldown-= Time.deltaTime;
       
@@ -66,7 +78,8 @@ String facing;
                 cooldown = maxCooldown;
             }
         } 
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+         {
         print("shoot");
         Shoot();
        }
@@ -183,8 +196,8 @@ String facing;
         cooldown = maxCooldown;
          GameObject Fireball = Instantiate(projectile_prefab, transform.position, quaternion.identity);
 
-     Projectile projectile= Fireball.GetComponent<Projectile>();
-     projectile.target = target;
+        PlayerProjectile projectile= Fireball.GetComponent<PlayerProjectile>();
+        projectile.SetDirection(facing);
    
     }
   void OnTriggerEnter(Collider other)

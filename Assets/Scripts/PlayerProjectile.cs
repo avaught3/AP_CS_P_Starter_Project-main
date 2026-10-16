@@ -22,7 +22,7 @@ private float maxCooldown = 1.5f;
     {
         float step = speed * Time.deltaTime;
         
-           transform.position = Vector3.MoveTowards(transform.position, target_position, step);
+           transform.position += direction * step;
               cooldown-= Time.deltaTime;
 
         if (cooldown < 0)
@@ -40,6 +40,14 @@ private float maxCooldown = 1.5f;
         else if (facing == "Left")
         {
             direction = new Vector3(-1, 0, 0);
+        }
+         else if (facing == "Up")
+        {
+            direction = new Vector3(0, 1, 0);
+        }  
+          else if (facing == "Down")
+        {
+            direction = new Vector3(0, -1, 0);
         }
     }
 }
