@@ -104,9 +104,7 @@ String facing;
         if (other.gameObject.CompareTag("E_Fireball"))
         {
            ChangeHealth(-3);
-            Destroy(other.gameObject);
         }
-    
     }
 
     void UpdateAnimation()
@@ -199,10 +197,5 @@ String facing;
         projectile.SetDirection(facing);
    
     }
-  void OnTriggerEnter(Collider other)
-    {
-       
-    } 
-  
-
+    
 }
