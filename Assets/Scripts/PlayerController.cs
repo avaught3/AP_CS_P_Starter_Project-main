@@ -1,7 +1,5 @@
 using System;
 using Unity.Mathematics;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,10 +21,10 @@ private float maxCooldown = 1.5f;
 private bool inRange = false;
 Transform target;
 String facing;
-
-
+[SerializeField] GameObject attack_box;
 
 [SerializeField] private GameObject projectile_prefab;
+GameObject currentEnemy;
 
     
     private void Start()
@@ -51,22 +49,28 @@ String facing;
        if (xdirection>0)
         {
             facing = "Right";
+            attack_box.transform.position = transform.position + new Vector3(0.5f,0.5f,0);
         }
         else if (xdirection<0)
         {
             facing = "Left";
+            attack_box.transform.position = transform.position + new Vector3(-0.5f,0.5f,0);
         }
         else if (ydirection>0)
         {
             facing = "Up";
+            attack_box.transform.position = transform.position + new Vector3(0,1,0);
         }
         else if (ydirection<0)
         {
             facing = "Down";
+            attack_box.transform.position = transform.position + new Vector3(0,0,0);
         }
+      
        transform.position += new Vector3(xvector,yvector,0f);
        UpdateAnimation();
        body.linearVelocity = new Vector2(xvector, yvector) * speed;
+       
        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
            cooldown-= Time.deltaTime;
@@ -83,6 +87,13 @@ String facing;
         print("shoot");
         Shoot();
        }
+
+       if (Input.GetKeyDown(KeyCode.E))
+        {
+            print("tried to attack");
+            currentEnemy.GetComponent<EnemyController>().ChangeHealth(-1);
+            cooldown = 0.5f;
+        }
    
     }
 
@@ -101,10 +112,7 @@ String facing;
             Destroy(other.gameObject);
           
         }
-        if (other.gameObject.CompareTag("E_Fireball"))
-        {
-           ChangeHealth(-3);
-        }
+       
     }
 
     void UpdateAnimation()
@@ -170,8 +178,8 @@ String facing;
     public void ChangeHealth(int amount)
     {
      
-            print("you have " + health + " health");
-             health = health - amount;
+            print("you have " +health + " health");
+             health = health + amount;
       
         Debug.Log("Health: " + health);
 

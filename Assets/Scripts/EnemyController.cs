@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.SceneManagement;
@@ -62,6 +63,18 @@ public class EnemyController : MonoBehaviour
             inRange = false;
             target = null;
         } 
+    }
+    void ChangeHealth(int amount);
+    {
+        health = health-amount;
+        if(health<0)
+        {
+            Die();
+        }
+    }
+    void Die()
+    {
+        Destroy(gameObject);
     }
 
 }
