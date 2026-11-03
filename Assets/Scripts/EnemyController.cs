@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour
    bool attacking = false;
    [SerializeField] private List<Transform> targetTransforms = new List<Transform>();
    int patrolNumber = 0;
+   [SerializeField]  private int health = 5;
     
     public void Start()
     {
@@ -64,7 +65,7 @@ public class EnemyController : MonoBehaviour
             target = null;
         } 
     }
-    void ChangeHealth(int amount);
+    public void ChangeHealth(int amount)
     {
         health = health-amount;
         if(health<0)
@@ -72,6 +73,7 @@ public class EnemyController : MonoBehaviour
             Die();
         }
     }
+   
     void Die()
     {
         Destroy(gameObject);

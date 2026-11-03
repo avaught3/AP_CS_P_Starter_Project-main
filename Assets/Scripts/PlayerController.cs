@@ -1,6 +1,6 @@
 using System;
-using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
@@ -25,6 +25,11 @@ String facing;
 
 [SerializeField] private GameObject projectile_prefab;
 GameObject currentEnemy;
+[SerializeField] float jumpforce;
+bool isPlatformer = false;
+int jumpsRemaining =1;
+int maxJumps =1;
+bool onGround = true;
 
     
     private void Start()
@@ -33,18 +38,27 @@ GameObject currentEnemy;
         renderer = GetComponentInChildren<SpriteRenderer>();
        body = GetComponent<Rigidbody2D>();
         cooldown = maxCooldown;
-       
-       
+       Scene currentScene = SceneManager.GetActiveScene();
+       print(currentScene.name);
+       if(currentScene.name == "Overworld")
+        {
+            isPlatformer = false;
+            body.gravityScale = 0;
+        }
+       else
+        {
+            isPlatformer = true;
+            body.gravityScale =1;
+        }
     }
 
     private void Update()
     {
        //get input
        xdirection = Input.GetAxis("Horizontal");
-       ydirection = Input.GetAxis("Vertical");
        //create vector
        xvector = xdirection * speed * Time.deltaTime;
-       yvector = ydirection * speed * Time.deltaTime;
+       
        //move by vector amount
        if (xdirection>0)
         {
@@ -56,7 +70,12 @@ GameObject currentEnemy;
             facing = "Left";
             attack_box.transform.position = transform.position + new Vector3(-0.5f,0.5f,0);
         }
-        else if (ydirection>0)
+        
+       if(!isPlatformer)
+       {
+        ydirection = Input.GetAxis("Vertical");
+        yvector = ydirection * speed * Time.deltaTime;
+        if (ydirection>0)
         {
             facing = "Up";
             attack_box.transform.position = transform.position + new Vector3(0,1,0);
@@ -66,6 +85,8 @@ GameObject currentEnemy;
             facing = "Down";
             attack_box.transform.position = transform.position + new Vector3(0,0,0);
         }
+        body.linearVelocity = new Vector2(xvector, yvector);
+       }
       
        transform.position += new Vector3(xvector,yvector,0f);
        UpdateAnimation();
@@ -82,6 +103,20 @@ GameObject currentEnemy;
                 cooldown = maxCooldown;
             }
         } 
+
+        else
+        {
+            if(Input.GetKeyDown(KeyCode.J) && jumpsRemaining>=1)
+            {
+               yvector = jumpforce;
+                body.AddForceY(jumpforce, ForceMode2D.Impulse);
+
+                jumpsRemaining -=1;
+            }
+
+            body.linearVelocityX = xvector;
+        }
+
         if (Input.GetKeyDown(KeyCode.LeftShift))
          {
         print("shoot");
@@ -149,7 +184,10 @@ GameObject currentEnemy;
         {
             TakeDamage(1);
         }
-        
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            jumpsRemaining = maxJumps;
+        }
     }
     
 
@@ -199,7 +237,7 @@ GameObject currentEnemy;
     private void Shoot()
     {
         cooldown = maxCooldown;
-         GameObject Fireball = Instantiate(projectile_prefab, transform.position, quaternion.identity);
+         GameObject Fireball = Instantiate(projectile_prefab, transform.position, Quaternion.identity);
 
         PlayerProjectile projectile= Fireball.GetComponent<PlayerProjectile>();
         projectile.SetDirection(facing);
