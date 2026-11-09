@@ -13,6 +13,7 @@ public class Lever : MonoBehaviour
 
     private SpriteRenderer spriteRenderer;
     private bool isOn = false;
+    [SerializeField] Platform platform;
 
     private void Start()
     {
@@ -22,6 +23,11 @@ public class Lever : MonoBehaviour
         {
             spriteRenderer.sprite = offSprite;
         }
+        //if switched
+        {
+            platform.isOn=true;
+        }
+        
     }
 
     // Called by PlayerController when 'E' is pressed nearby

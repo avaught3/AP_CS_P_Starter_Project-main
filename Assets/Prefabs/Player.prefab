@@ -167,6 +167,7 @@ MonoBehaviour:
   health: 3
   attack_box: {fileID: 6343888423897053273}
   projectile_prefab: {fileID: 5536163553699341134, guid: 3698eacd6bec947f1ae89cbaeb28a2a1, type: 3}
+  jumpforce: 200
 --- !u!58 &2109020006998169954
 CircleCollider2D:
   m_ObjectHideFlags: 0

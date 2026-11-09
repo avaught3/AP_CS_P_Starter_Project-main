@@ -30,16 +30,17 @@ bool isPlatformer = false;
 int jumpsRemaining =1;
 int maxJumps =1;
 bool onGround = true;
+StatManager manager;
 
     
     private void Start()
     {
+        manager = FindAnyObjectByType<StatManager>();
         anim = GetComponentInChildren<Animator>();
         renderer = GetComponentInChildren<SpriteRenderer>();
        body = GetComponent<Rigidbody2D>();
         cooldown = maxCooldown;
        Scene currentScene = SceneManager.GetActiveScene();
-       print(currentScene.name);
        if(currentScene.name == "Overworld")
         {
             isPlatformer = false;
@@ -91,7 +92,7 @@ bool onGround = true;
        transform.position += new Vector3(xvector,yvector,0f);
        UpdateAnimation();
        body.linearVelocity = new Vector2(xvector, yvector) * speed;
-       
+     
        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
            cooldown-= Time.deltaTime;
@@ -138,14 +139,16 @@ bool onGround = true;
         {
            
             Destroy(other.gameObject);
-           
+           manager.coins +=1;
+           print("you have" + manager.coins + "coins");
             ChangeCoins(5);
         }
         if (other.CompareTag("HealthPotion"))
         {
             health += 1;
             Destroy(other.gameObject);
-          
+          manager.health +=1;
+          print("you have" + manager.health + "health");
         }
        
     }
@@ -184,12 +187,20 @@ bool onGround = true;
         {
             TakeDamage(1);
         }
+     
         if(collision.gameObject.CompareTag("Ground"))
         {
             jumpsRemaining = maxJumps;
         }
+     
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            transform.SetParent(collision.gameObject.transform);
+            transform.SetParent(null);
+            collision.gameObject.GetComponent<Platform>().isOn = true;
+        }
     }
-    
+  
 
     private void TakeDamage(int amount)
     {
