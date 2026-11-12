@@ -32,7 +32,6 @@ int maxJumps =1;
 bool onGround = true;
 StatManager manager;
 
-    
     private void Start()
     {
         manager = FindAnyObjectByType<StatManager>();
@@ -58,7 +57,7 @@ StatManager manager;
        //get input
        xdirection = Input.GetAxis("Horizontal");
        //create vector
-       xvector = xdirection * speed * Time.deltaTime;
+       xvector = xdirection * speed;
        
        //move by vector amount
        if (xdirection>0)
@@ -75,7 +74,7 @@ StatManager manager;
        if(!isPlatformer)
        {
         ydirection = Input.GetAxis("Vertical");
-        yvector = ydirection * speed * Time.deltaTime;
+        yvector = ydirection * speed;
         if (ydirection>0)
         {
             facing = "Up";
@@ -88,16 +87,24 @@ StatManager manager;
         }
         body.linearVelocity = new Vector2(xvector, yvector);
        }
-      
-       transform.position += new Vector3(xvector,yvector,0f);
-       UpdateAnimation();
-       body.linearVelocity = new Vector2(xvector, yvector) * speed;
+       else
+        {
+            if(Input.GetKeyDown(KeyCode.J) && jumpsRemaining>=1)
+            {
+                yvector = jumpforce;
+                body.AddForceY(jumpforce, ForceMode2D.Impulse);
+
+                jumpsRemaining -=1;
+            }
+
+             body.linearVelocityX = xvector;
+        }
      
        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-           cooldown-= Time.deltaTime;
-      
-        if (cooldown <=0)
+            cooldown-= Time.deltaTime;
+        
+            if (cooldown <=0)
             {
                 Shoot();
 
@@ -105,24 +112,6 @@ StatManager manager;
             }
         } 
 
-        else
-        {
-            if(Input.GetKeyDown(KeyCode.J) && jumpsRemaining>=1)
-            {
-               yvector = jumpforce;
-                body.AddForceY(jumpforce, ForceMode2D.Impulse);
-
-                jumpsRemaining -=1;
-            }
-
-            body.linearVelocityX = xvector;
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-         {
-        print("shoot");
-        Shoot();
-       }
 
        if (Input.GetKeyDown(KeyCode.E))
         {
@@ -130,6 +119,8 @@ StatManager manager;
             currentEnemy.GetComponent<EnemyController>().ChangeHealth(-1);
             cooldown = 0.5f;
         }
+
+         UpdateAnimation();
    
     }
 
