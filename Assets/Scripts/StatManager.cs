@@ -1,12 +1,13 @@
 using UnityEngine;
-
+using TMPro;
 public class StatManager : MonoBehaviour
 {
 public int health;
 public int coins;
 
 public static StatManager original;
-
+[SerializeField]TextMeshProUGUI coinText;
+[SerializeField]TextMeshProUGUI healthText;
 
 void Awake()
     {
@@ -19,21 +20,28 @@ void Awake()
         DontDestroyOnLoad(gameObject);
     }
 
-
+void Start()
+    {
+        coinText.text = "Coins: " +coins;
+       healthText.text = "Health: " +health;
+    }
 
 
     public void ChangeCoins(int amount)
     {
       coins = coins+amount;
            
-            print("you have " + coins + " coins");  
+            coinText.text = "Coins: " +coins;
+           
     }
 
      public void ChangeHealth(int amount)
     {
+         health = health + amount;
+         
+            healthText.text = "Health: " +health;
      
-            print("you have " +health + " health");
-             health = health + amount;
+        //print("you have " +health + " health");
       
         Debug.Log("Health: " + health);
 
@@ -43,5 +51,5 @@ void Awake()
         }
 
     }
-
+ 
 }

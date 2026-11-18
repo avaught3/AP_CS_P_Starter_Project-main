@@ -1,4 +1,6 @@
 using System;
+using NUnit.Framework;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -31,6 +33,7 @@ int jumpsRemaining =1;
 int maxJumps =1;
 bool onGround = true;
 StatManager manager;
+
 
     private void Start()
     {
@@ -95,6 +98,7 @@ StatManager manager;
                 body.AddForceY(jumpforce, ForceMode2D.Impulse);
 
                 jumpsRemaining -=1;
+            
             }
 
              body.linearVelocityX = xvector;
@@ -120,6 +124,7 @@ StatManager manager;
             cooldown = 0.5f;
         }
 
+
          UpdateAnimation();
    
     }
@@ -128,12 +133,12 @@ StatManager manager;
     {
         if (other.CompareTag("Coin"))
         {
-           
             Destroy(other.gameObject);
            manager.coins +=1;
            print("you have" + manager.coins + "coins");
-            ChangeCoins(5);
+            ChangeCoins(1);
         }
+       
         if (other.CompareTag("HealthPotion"))
         {
             health += 1;
@@ -142,6 +147,18 @@ StatManager manager;
           print("you have" + manager.health + "health");
         }
        
+       if(other.CompareTag("Boots"))
+        {
+            maxJumps = 2;
+            jumpsRemaining=maxJumps;
+            cooldown-= Time.deltaTime;
+            cooldown = 60f;
+            if (cooldown <=0)
+            {
+                maxJumps = 1;
+            }
+           
+        }
     }
 
     void UpdateAnimation()
@@ -189,6 +206,7 @@ StatManager manager;
             transform.SetParent(collision.gameObject.transform);
             transform.SetParent(null);
             collision.gameObject.GetComponent<Platform>().isOn = true;
+            jumpsRemaining = maxJumps; 
         }
     }
   
@@ -212,7 +230,7 @@ StatManager manager;
     {
       coins = coins+amount;
            
-            print("you have " + coins + " coins");  
+           //print("you have 'Coins:' +coins");  
     }
     
     public void ChangeHealth(int amount)
